@@ -28,7 +28,7 @@ final class UserController extends AbstractController
 
         try {
             $newUser = $userManager->create($email, $pseudo, $plainPassword);
-            return $this->json(['message' => 'Utilisateur ajouté', 'id' => $newUser->getId()], 201);
+            return $this->json(['message' => "Utilisateur ajouté ! Nous vous envoyons un mail pour confirmer votre compte"], 201);
         } catch (ValidationFailedException  $e) {
             $errors = [];
             foreach ($e->getViolations() as $violation) {
