@@ -9,16 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Manager\UserManager;
 use App\Repository\UserRepository;
 use App\Security\SendEmailVerifier;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
-use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 final class UserController extends AbstractController
 {
