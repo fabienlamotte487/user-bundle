@@ -18,7 +18,7 @@ class SendEmailVerifier
         private EntityManagerInterface $manager
     ) {}
 
-    public function sendEmailConfirmation(string $verifyRouteName, UserInterface $user, TemplatedEmail $email): void
+    public function sendEmailConfirmation(string $verifyRouteName, User $user, TemplatedEmail $email): void
     {
         // Générer un lien signé unique
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
