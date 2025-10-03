@@ -19,7 +19,6 @@ final class UserController extends AbstractController
     #[Route('/api/user', methods: ["POST"], name: "create_user")]
     public function createUser(
         Request $request, 
-        SendEmailVerifier $sendEmailVerifier,
         UserManager $userManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
