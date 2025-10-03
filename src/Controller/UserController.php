@@ -14,6 +14,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
@@ -35,7 +36,7 @@ final class UserController extends AbstractController
         try {
             $newUser = $userManager->create($email, $pseudo, $plainPassword);
             $sendEmailVerifier->sendEmailConfirmation(
-                'verify_email', 
+                'verify_email',
                 $newUser, 
                 (new TemplatedEmail())
                     ->from('contact@fabienlamotte.fr')
@@ -87,6 +88,40 @@ final class UserController extends AbstractController
             'message' => 'Voici les informations utilisateur',
             'user' => $user
         ], 200);
+    }
+
+    #[Route('/api/user/email', name: 'update_user_email', methods: ['PUT'])]
+    #[IsGranted('ROLE_USER')]
+    public function updateEmail(
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+        UserManager $userManager
+    ): JsonResponse {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+
+        $data = json_decode($request->getContent(), true);
+        $newEmail = $data['email'] ?? null;
+        $password = $data['password'] ?? null;
+
+        if (!$newEmail || !$password) {
+            return $this->json(['error' => "Email et mot de passe sont requis"], 400);
+        }
+
+        // Vérification du mot de passe actuel
+        if (!$passwordHasher->isPasswordValid($user, $password)) {
+            return $this->json(['error' => "Mot de passe incorrect"], 403);
+        }
+
+        try {
+            $userManager->updateEmail($user, $newEmail);
+
+            return $this->json([
+                'message' => "Un email de confirmation a été envoyé à $newEmail. Veuillez cliquer sur le lien pour valider."
+            ], 200);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], 400);
+        }
     }
 
     #[Route('/verify/email', name: 'verify_email', methods: ["GET"])]

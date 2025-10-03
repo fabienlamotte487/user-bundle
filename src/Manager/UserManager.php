@@ -5,8 +5,10 @@ namespace App\Manager;
 use App\Entity\User;
 use App\Factory\UserFactory;
 use App\Repository\UserRepository;
+use App\Security\SendEmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Error;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
@@ -19,6 +21,7 @@ class UserManager
         private UserFactory $userFactory,
         private UserRepository $userRepository,
         private ValidatorInterface $validator,
+        private SendEmailVerifier $sendEmailVerifier
     ) {}
 
     public function create(string $email, string $pseudo, string $plainPassword): User
@@ -63,5 +66,28 @@ class UserManager
     public function get(User $user): array
     {
         return $this->userFactory->getFormatedInfo($user);
+    }
+
+    public function updateEmail(User $user, string $newEmail): void
+    {
+        // Vérifier unicité
+        $existing = $this->em->getRepository(User::class)->findOneBy(['email' => $newEmail]);
+        if ($existing) {
+            throw new \Exception("Cette adresse email est déjà utilisée.");
+        }
+
+        // Marquer comme non vérifié
+        $user->setEmail($newEmail);
+        $user->setIsVerified(false);
+        $this->userRepository->save($user, true);
+
+        $this->sendEmailVerifier->sendEmailConfirmation(
+            'verify_email', 
+            $user, 
+            (new TemplatedEmail())
+                ->from('contact@fabienlamotte.fr')
+                ->to($user->getEmail())
+                ->subject('Veuillez confirmer votre adresse email')
+                ->htmlTemplate('registration/confirmation_email.html.twig'));
     }
 }
