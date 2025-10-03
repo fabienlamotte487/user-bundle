@@ -1,0 +1,9 @@
+<h1>Bonjour !</h1>
+
+<p>Pour modifier votre mot de passe, veuillez cliquer sur le lien ci-dessous.</p>
+
+<a href="{{ url('api_users_reset_password_redirect', {token: resetToken.token}) }}">Mettre à jour mon mot de passe</a>
+
+<p>Ce lien expirera dans 1 heure.</p>
+
+<p>Merci à vous, et à bientôt !</p>

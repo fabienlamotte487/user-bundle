@@ -39,12 +39,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank(
         message: "Le mot de passe est obligatoire",
-        groups: ["create", "password_change"]
+        groups: ["create"]
     )]
     #[Assert\Regex(
         pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/',
         message: "Le mot de passe doit contenir au minimum 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial",
-        groups: ["create", "password_change"]
+        groups: ["create"]
     )]
     private ?string $plainPassword = null;
 
