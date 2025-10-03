@@ -17,6 +17,7 @@ security:
             pattern: ^/api
             stateless: true
             entry_point: jwt
+            user_checker: App\Security\UserChecker
             json_login:
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
@@ -30,7 +31,7 @@ security:
     access_control:
         - { path: ^/api/(login|token/refresh), roles: PUBLIC_ACCESS }
         - { path: ^/api/user, roles: PUBLIC_ACCESS, methods: [POST] }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY } 
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY } 
 
 when@test:
     security:

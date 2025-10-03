@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Error;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -41,7 +42,7 @@ class UserManager
             'verify_email',
             $user, 
             (new TemplatedEmail())
-                ->from('contact@fabienlamotte.fr')
+                ->from(new Address('contact@fabienlamotte.fr', 'MythicTournament'))
                 ->to($user->getEmail())
                 ->subject('Veuillez confirmer votre adresse email')
                 ->htmlTemplate('registration/confirmation_email.html.twig'));
@@ -94,7 +95,7 @@ class UserManager
             'verify_email', 
             $user, 
             (new TemplatedEmail())
-                ->from('contact@fabienlamotte.fr')
+                ->from(new Address('contact@fabienlamotte.fr', 'MythicTournament'))
                 ->to($user->getEmail())
                 ->subject('Veuillez confirmer votre adresse email')
                 ->htmlTemplate('registration/confirmation_email.html.twig'));

@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Manager\UserManager;
 use App\Repository\UserRepository;
 use App\Security\SendEmailVerifier;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
