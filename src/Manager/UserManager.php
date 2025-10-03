@@ -36,6 +36,15 @@ class UserManager
 
         $user = $this->userFactory->setPassword($user);
         $this->userRepository->save($user, true);
+        
+        $this->sendEmailVerifier->sendEmailConfirmation(
+            'verify_email',
+            $user, 
+            (new TemplatedEmail())
+                ->from('contact@fabienlamotte.fr')
+                ->to($user->getEmail())
+                ->subject('Veuillez confirmer votre adresse email')
+                ->htmlTemplate('registration/confirmation_email.html.twig'));
 
         return $user;
     }

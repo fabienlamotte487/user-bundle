@@ -29,15 +29,6 @@ final class UserController extends AbstractController
 
         try {
             $newUser = $userManager->create($email, $pseudo, $plainPassword);
-            $sendEmailVerifier->sendEmailConfirmation(
-                'verify_email',
-                $newUser, 
-                (new TemplatedEmail())
-                    ->from('contact@fabienlamotte.fr')
-                    ->to($newUser->getEmail())
-                    ->subject('Veuillez confirmer votre adresse email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig'));
-
             return $this->json(['message' => 'Utilisateur ajouté', 'id' => $newUser->getId()], 201);
         } catch (ValidationFailedException  $e) {
             $errors = [];
