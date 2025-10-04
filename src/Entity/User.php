@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity(fields: ['email'], message: 'Un compte possédant cette adresse email existe déjà.')]
+#[UniqueEntity(fields: ['email'], message: 'Un compte possédant cette adresse email existe déjà.', groups: ['create'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -23,6 +23,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank(message: "L'adresse email est obligatoire")]
     #[Assert\Email(message: "L'adresse email '{{ value }}' n'est pas valide")]
+    
     private ?string $email = null;
 
     /**
