@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -27,7 +28,15 @@ final class UserController extends AbstractController
 
         try {
             $newUser = $userManager->create($email, $pseudo, $plainPassword);
-            return $this->json(['message' => "Utilisateur ajouté ! Nous vous envoyons un mail pour confirmer votre compte"], 201);
+            return $this->json([
+                'message' => "Utilisateur ajouté ! Nous vous envoyons un mail pour confirmer votre compte",
+                'user' => [
+                    'id' => $newUser->getId(),
+                    'pseudo' => $newUser->getPseudo(),
+                    'email' => $newUser->getEmail(),
+                    "created_at" => $newUser->getCreatedAt()
+                ]
+            ], 201);
         } catch (ValidationFailedException  $e) {
             $errors = [];
             foreach ($e->getViolations() as $violation) {
@@ -44,7 +53,7 @@ final class UserController extends AbstractController
     {
         $userManager->delete($this->getUser());
 
-        return $this->json(['message' => 'Utilisateur supprimé avec succès'], 200);
+        return $this->json(['message' => 'Utilisateur supprimé avec succès'], 204);
     }
 
     #[Route('/api/user', name: 'update_user', methods: ['PUT'])]
@@ -63,13 +72,26 @@ final class UserController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function getUserInfo(UserManager $userManager): JsonResponse
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         $user = $userManager->get($this->getUser());
 
         return $this->json([
             'message' => 'Voici les informations utilisateur',
             'user' => $user
+        ], 200);
+    }
+
+    #[Route('/api/user/{id}', name: 'get_target_user', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function getUserTargetInfo(User $targetUser): JsonResponse
+    {
+        return $this->json([
+            'message' => 'Voici les informations utilisateur',
+            'user' => [
+                'id' => $targetUser->getId(),
+                'pseudo' => $targetUser->getPseudo(),
+                'email' => $targetUser->getEmail(),
+                "created_at" => $targetUser->getCreatedAt()
+            ]
         ], 200);
     }
 
