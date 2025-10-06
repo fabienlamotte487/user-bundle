@@ -14,73 +14,7 @@ class UserApiTest extends WebTestCase
     }
 
     // -----------------------------------------------------
-    // 1. Création d’utilisateur (POST /api/user)
-    // -----------------------------------------------------
-
-    // Test classique avec des données valide => 201 user created
-    public function testCreateUserSuccess(): void
-    {
-        $this->client->request('POST', '/api/user', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
-            "email" => "test@example.com",
-            "plainPassword" => "Password123!",
-            "pseudo" => "Fabien"
-        ]));
-
-        $this->assertResponseStatusCodeSame(201);
-        $data = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertArrayHasKey('id', $data['user']);
-        $this->assertEquals('test@example.com', $data['user']['email']);
-        $this->assertEquals('Fabien', $data['user']['pseudo']);
-        $this->assertArrayNotHasKey('plainPassword', $data['user']);
-        $this->assertArrayNotHasKey('password', $data['user']);
-    }
-
-    // Test avec email existant => 400 bad request same email
-    public function testCreateUserFailsWithDuplicateEmail(): void
-    {
-        // Précondition : créer un user
-        $this->client->request('POST', '/api/user', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
-            "email" => "duplicate@example.com",
-            "plainPassword" => "Password123!",
-            "pseudo" => "Fabien"
-        ]));
-
-        // Deuxième création avec le même email
-        $this->client->request('POST', '/api/user', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
-            "email" => "duplicate@example.com",
-            "plainPassword" => "Password123!",
-            "pseudo" => "Fabien"
-        ]));
-
-        $this->assertResponseStatusCodeSame(400);
-    }
-
-    // Test avec email invalide => 400 bad request
-    public function testCreateUserFailsWithInvalidEmail(): void
-    {
-        $this->client->request('POST', '/api/user', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
-            'email' => 'not-an-email',
-            "plainPassword" => "Password123!",
-            "pseudo" => "Fabien"
-        ]));
-
-        $this->assertResponseStatusCodeSame(400);
-    }
-
-    // Test avec mot de passe faible => 400 bad request
-    public function testCreateUserFailsWithWeakPassword(): void
-    {
-        $this->client->request('POST', '/api/user', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
-            'email' => 'weakpass@example.com',
-            "pseudo" => "Fabien",
-            'plainPassword' => '123'
-        ]));
-
-        $this->assertResponseStatusCodeSame(400);
-    }
-
-    // -----------------------------------------------------
-    // 2. Lecture d’un utilisateur (GET /api/user/{id})
+    // 3. Lecture d’un utilisateur (GET /api/user/{id})
     // -----------------------------------------------------
 
     // public function testGetUserSuccess(): void
@@ -107,7 +41,7 @@ class UserApiTest extends WebTestCase
     // }
 
     // // -----------------------------------------------------
-    // // 3. Liste des utilisateurs (GET /api/user)
+    // // 4. Liste des utilisateurs (GET /api/user)
     // // -----------------------------------------------------
 
     // public function testListUsersSuccess(): void
@@ -119,7 +53,7 @@ class UserApiTest extends WebTestCase
     // }
 
     // // -----------------------------------------------------
-    // // 4. Mise à jour d’un utilisateur (PUT/PATCH /api/user/{id})
+    // // 5. Mise à jour d’un utilisateur (PUT/PATCH /api/user/{id})
     // // -----------------------------------------------------
 
     // public function testUpdateUserSuccess(): void
@@ -161,7 +95,7 @@ class UserApiTest extends WebTestCase
     // }
 
     // // -----------------------------------------------------
-    // // 5. Suppression d’un utilisateur (DELETE /api/user/{id})
+    // // 6. Suppression d’un utilisateur (DELETE /api/user/{id})
     // // -----------------------------------------------------
 
     // public function testDeleteUserSuccess(): void
@@ -183,38 +117,5 @@ class UserApiTest extends WebTestCase
     // {
     //     $this->client->request('DELETE', '/api/user/999999');
     //     $this->assertResponseStatusCodeSame(404);
-    // }
-
-    // // -----------------------------------------------------
-    // // 6. Authentification (POST /api/login_check)
-    // // -----------------------------------------------------
-
-    // public function testLoginSuccess(): void
-    // {
-    //     // Créer un utilisateur
-    //     $this->client->request('POST', '/api/user', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
-    //         'email' => 'login@example.com',
-    //         'password' => 'Password123!'
-    //     ]));
-
-    //     // Tentative de login
-    //     $this->client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
-    //         'username' => 'login@example.com',
-    //         'password' => 'Password123!'
-    //     ]));
-
-    //     $this->assertResponseIsSuccessful();
-    //     $data = json_decode($this->client->getResponse()->getContent(), true);
-    //     $this->assertArrayHasKey('token', $data);
-    // }
-
-    // public function testLoginFailsWithWrongPassword(): void
-    // {
-    //     $this->client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
-    //         'username' => 'login@example.com',
-    //         'password' => 'WrongPassword'
-    //     ]));
-
-    //     $this->assertResponseStatusCodeSame(401);
     // }
 }

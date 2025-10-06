@@ -25,12 +25,12 @@ class UserManager
         private SendEmailVerifier $sendEmailVerifier
     ) {}
 
-    public function create(string $email, string $pseudo, string $plainPassword): User
+    public function create(?string $email, ?string $pseudo, ?string $plainPassword): User
     {
 
         $user = $this->userFactory->create($email, $pseudo, $plainPassword);
         
-        $errors = $this->validator->validate($user, null, ['create']);
+        $errors = $this->validator->validate($user, null);
         if (count($errors) > 0) {
             throw new ValidationFailedException($user, $errors);
         }

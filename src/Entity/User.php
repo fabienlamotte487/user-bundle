@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity(
     fields: ['email'],
     message: "Un compte possédant cette adresse email existe déjà",
-    groups: ["create"]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -29,7 +28,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Email(
         message: "L'adresse email '{{ value }}' n'est pas valide",
         mode: 'strict',
-        groups: ['create']
     )]
     private ?string $email = null;
 
@@ -47,12 +45,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank(
         message: "Le mot de passe est obligatoire",
-        groups: ["create"]
     )]
     #[Assert\Regex(
         pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/',
         message: "Le mot de passe doit contenir au minimum 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial",
-        groups: ["create"]
     )]
     private ?string $plainPassword = null;
 
@@ -60,16 +56,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private bool $isVerified = false;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le pseudo est obligatoire")]
+    #[Assert\NotBlank(
+        message: "Le pseudo est obligatoire", 
+    )]
     #[Assert\Length(
         min: 3,
         max: 20,
         minMessage: "Le pseudo doit contenir au moins {{ limit }} caractères",
-        maxMessage: "Le pseudo ne peut pas dépasser {{ limit }} caractères"
+        maxMessage: "Le pseudo ne peut pas dépasser {{ limit }} caractères",
     )]
     #[Assert\Regex(
         pattern: '/^[a-zA-Z0-9_]+$/',
-        message: "Le pseudo ne peut contenir que des lettres, chiffres ou underscores"
+        message: "Le pseudo ne peut contenir que des lettres, chiffres ou underscores",
     )]
     private ?string $pseudo = null;
 
@@ -89,7 +87,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(?string $email): static
     {
         $this->email = $email;
 
@@ -151,7 +149,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->plainPassword;
     }
 
-    public function setPlainPassword(string $plainPassword): static
+    public function setPlainPassword(?string $plainPassword): static
     {
         $this->plainPassword = $plainPassword;
 
@@ -192,7 +190,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->pseudo;
     }
 
-    public function setPseudo(string $pseudo): static
+    public function setPseudo(?string $pseudo): static
     {
         $this->pseudo = $pseudo;
 
