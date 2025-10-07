@@ -4,7 +4,7 @@ namespace App\Tests\Functional;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class AddUserCommandTest extends WebTestCase
+class CreateUserCommandTest extends WebTestCase
 {
     private $client;
 

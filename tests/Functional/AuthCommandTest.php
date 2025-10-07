@@ -3,19 +3,27 @@
 namespace App\Tests\Functional;
 
 use App\DataFixtures\UserFixturesTest;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
+
 
 class AuthCommandTest extends WebTestCase
 {
     private \Symfony\Bundle\FrameworkBundle\KernelBrowser $client;
+    protected $entityManager;
 
     protected function setUp(): void
     {
         $this->client = static::createClient();
+        $this->entityManager = static::getContainer()->get('doctrine')->getManager();
+
+        // Purge avant chaque test
+        $purger = new ORMPurger($this->entityManager);
+        $purger->purge();
+        
+        static::getContainer()->get(DatabaseToolCollection::class)->get()->loadFixtures([UserFixturesTest::class]);
     }
 
     public function testLoginSuccess(): void
