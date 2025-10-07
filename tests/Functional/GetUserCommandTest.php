@@ -13,7 +13,7 @@ class GetUserCommandTest extends WebTestCase
         $this->client = static::createClient();
     }
 
-    public function testGetCurrentUserSuccess(): void 
+    public function testSuccessGetCurrentUser(): void 
     {
         // Connexion avec un utilisateur existant
         $this->client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
@@ -37,7 +37,7 @@ class GetUserCommandTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
-    public function testGetTargetUserSuccess(): void
+    public function testSuccessGetTargetUser(): void
     {
         // Création
         $this->client->request('POST', '/api/user', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
@@ -70,7 +70,7 @@ class GetUserCommandTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
-    public function testGetUserNotFound(): void
+    public function testFailGetUserNotFound(): void
     {
         
         $this->client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
@@ -87,5 +87,39 @@ class GetUserCommandTest extends WebTestCase
         ]);
 
         $this->assertResponseStatusCodeSame(404);
+    }
+    
+    public function testFailGetUnverifiedUser(): void
+    {
+        $this->client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
+            'username' => 'loginErrorNotVerified@example.fr',
+            'password' => 'Platinum#0000'
+        ]));
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $token = $data['token'];
+
+        // Lecture
+        $this->client->request('GET', '/api/user', [], [], [
+            'HTTP_Authorization' => 'Bearer ' . $token,
+            'CONTENT_TYPE' => 'application/json',
+        ]);
+
+        $this->assertResponseStatusCodeSame(401);
+    }
+    
+    public function testFailGetUserWithoutToken(): void
+    {
+        $this->client->request('POST', '/api/login_check', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
+            'username' => 'loginErrorNotVerified@example.fr',
+            'password' => 'Platinum#0000'
+        ]));
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+
+        // Lecture
+        $this->client->request('GET', '/api/user', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ]);
+
+        $this->assertResponseStatusCodeSame(401);
     }
 }
