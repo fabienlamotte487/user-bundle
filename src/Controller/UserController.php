@@ -53,19 +53,7 @@ final class UserController extends AbstractController
     {
         $userManager->delete($this->getUser());
 
-        return $this->json(['message' => 'Utilisateur supprimé avec succès'], 204);
-    }
-
-    #[Route('/api/user', name: 'update_user', methods: ['PUT'])]
-    #[IsGranted('ROLE_USER')]
-    public function updateUser(UserManager $userManager, Request $request): JsonResponse
-    {
-        $user = $userManager->update($this->getUser(), $request);
-
-        return $this->json([
-            'message' => 'Utilisateur modifié avec succès',
-            'user' => $userManager->get($user)
-        ], 200);
+        return $this->json(['message' => 'Utilisateur supprimé avec succès'], 200);
     }
 
     #[Route('/api/user', name: 'get_user', methods: ['GET'])]
@@ -88,6 +76,18 @@ final class UserController extends AbstractController
         return $this->json([
             'message' => 'Voici les informations utilisateur',
             'user' => $user
+        ], 200);
+    }
+    
+    #[Route('/api/user', name: 'update_user', methods: ['PUT'])]
+    #[IsGranted('ROLE_USER')]
+    public function updateUser(UserManager $userManager, Request $request): JsonResponse
+    {
+        $user = $userManager->update($this->getUser(), $request);
+
+        return $this->json([
+            'message' => 'Utilisateur modifié avec succès',
+            'user' => $userManager->get($user)
         ], 200);
     }
 
@@ -122,27 +122,6 @@ final class UserController extends AbstractController
             ], 200);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], 400);
-        }
-    }
-
-    #[Route('/verify/email', name: 'verify_email', methods: ["GET"])]
-    public function verifyUserEmail(
-        Request $request, 
-        UserRepository $userRepository, 
-        SendEmailVerifier $sendEmailVerifier, 
-    ): JsonResponse {
-        $userId = $request->query->get('id');
-        $user = $userRepository->find($userId);
-
-        if (!$user) {
-            return $this->json(['error' => 'Utilisateur non trouvé'], 404);
-        }
-
-        try {
-            $sendEmailVerifier->handleEmailConfirmation($request, $user);
-            return $this->json(['message' => 'Email confirmé avec succès !']);
-        } catch (\Exception $e) {
-            return $this->json(['error' => 'Lien invalide ou expiré'], 400);
         }
     }
 }

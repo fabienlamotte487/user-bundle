@@ -24,35 +24,4 @@ class UserApiTest extends WebTestCase
     //     $data = json_decode($this->client->getResponse()->getContent(), true);
     //     $this->assertIsArray($data);
     // }
-
-    // // -----------------------------------------------------
-    // // 5. Mise à jour d’un utilisateur (PUT/PATCH /api/user/{id})
-    // // -----------------------------------------------------
-
-    
-
-    // // -----------------------------------------------------
-    // // 6. Suppression d’un utilisateur (DELETE /api/user/{id})
-    // // -----------------------------------------------------
-
-    // public function testDeleteUserSuccess(): void
-    // {
-    //     // Création
-    //     $this->client->request('POST', '/api/user', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode([
-    //         'email' => 'delete@example.com',
-    //         'password' => 'Password123!'
-    //     ]));
-    //     $data = json_decode($this->client->getResponse()->getContent(), true);
-    //     $id = $data['id'];
-
-    //     // Suppression
-    //     $this->client->request('DELETE', '/api/user/'.$id);
-    //     $this->assertResponseStatusCodeSame(204);
-    // }
-
-    // public function testDeleteUserNotFound(): void
-    // {
-    //     $this->client->request('DELETE', '/api/user/999999');
-    //     $this->assertResponseStatusCodeSame(404);
-    // }
 }
