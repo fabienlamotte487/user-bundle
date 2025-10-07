@@ -40,8 +40,11 @@ class UserFactory
     public function getFormatedInfo(User $user): array 
     {
         $informations = [
-            'pseudo' => $user->getPseudo(),
-            'email' => $user->getEmail()
+            'id'            => $user->getId(),
+            'pseudo'        => $user->getPseudo(),
+            'email'         => $user->getEmail(),
+            'isVerified'    => $user->isVerified(),
+            'created_at'    => $user->getCreatedAt()
         ];
 
         return $informations;

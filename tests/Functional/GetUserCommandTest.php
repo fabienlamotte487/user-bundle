@@ -33,6 +33,16 @@ class GetUserCommandTest extends WebTestCase
                 'HTTP_Authorization' => 'Bearer ' . $token,
                 'CONTENT_TYPE' => 'application/json',
             ]);
+        $dataUser = json_decode($this->client->getResponse()->getContent(), true);
+            
+        $this->assertArrayHasKey('user', $dataUser);
+        $this->assertArrayHasKey('id', $dataUser['user']);
+        $this->assertArrayHasKey('email', $dataUser['user']);
+        $this->assertArrayHasKey('pseudo', $dataUser['user']);
+        $this->assertArrayHasKey('created_at', $dataUser['user']);
+        $this->assertArrayHasKey('isVerified', $dataUser['user']);
+        $this->assertArrayNotHasKey('plainPassword', $dataUser['user']);
+        $this->assertArrayNotHasKey('password', $dataUser['user']);
 
         $this->assertResponseIsSuccessful();
     }
@@ -66,6 +76,15 @@ class GetUserCommandTest extends WebTestCase
                 'HTTP_Authorization' => 'Bearer ' . $token,
                 'CONTENT_TYPE' => 'application/json',
             ]);
+
+        $dataUser = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('user', $dataUser);
+        $this->assertArrayHasKey('id', $dataUser['user']);
+        $this->assertArrayHasKey('email', $dataUser['user']);
+        $this->assertArrayHasKey('pseudo', $dataUser['user']);
+        $this->assertArrayHasKey('created_at', $dataUser['user']);
+        $this->assertArrayNotHasKey('plainPassword', $dataUser['user']);
+        $this->assertArrayNotHasKey('password', $dataUser['user']);
 
         $this->assertResponseIsSuccessful();
     }

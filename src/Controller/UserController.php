@@ -82,16 +82,12 @@ final class UserController extends AbstractController
 
     #[Route('/api/user/{id}', name: 'get_target_user', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
-    public function getUserTargetInfo(User $targetUser): JsonResponse
+    public function getUserTargetInfo(User $targetUser, UserManager $userManager): JsonResponse
     {
+        $user = $userManager->get($targetUser);
         return $this->json([
             'message' => 'Voici les informations utilisateur',
-            'user' => [
-                'id' => $targetUser->getId(),
-                'pseudo' => $targetUser->getPseudo(),
-                'email' => $targetUser->getEmail(),
-                "created_at" => $targetUser->getCreatedAt()
-            ]
+            'user' => $user
         ], 200);
     }
 
