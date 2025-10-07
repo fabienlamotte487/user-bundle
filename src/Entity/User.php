@@ -58,6 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(
         message: "Le pseudo est obligatoire", 
+        groups: ["update"]
     )]
     #[Assert\Length(
         min: 3,

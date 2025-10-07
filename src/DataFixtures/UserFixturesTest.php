@@ -27,6 +27,24 @@ class UserFixturesTest extends Fixture
             'password' => "Platinum#0000",
             'pseudo' => "Alcatraz",
             'verified' => false
+        ],
+        [
+            'email' => 'updateSuccess@example.fr',
+            'password' => "Platinum#0000",
+            'pseudo' => "Alcatraz",
+            'verified' => true
+        ],
+        [
+            'email' => 'updateErrorNotVerified@example.fr',
+            'password' => "Platinum#0000",
+            'pseudo' => "Alcatraz",
+            'verified' => false
+        ],
+        [
+            'email' => 'updateErrorEmptyFields@example.fr',
+            'password' => "Platinum#0000",
+            'pseudo' => "Alcatraz",
+            'verified' => true
         ]
     ];
     private UserPasswordHasherInterface $hasher;
