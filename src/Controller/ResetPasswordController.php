@@ -43,32 +43,6 @@ class ResetPasswordController extends AbstractController
         );
     }
 
-    #[Route('/reset', name: 'api_reset_password', methods: ['POST'])]
-    public function resetPassword(
-        Request $request,
-        ResetPasswordManager $manager
-    ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-
-        $dto = new ResetPasswordDTO();
-        $dto->plainPassword = $data['plainPassword'] ?? null;
-        $dto->token = $data['token'] ?? null;
-
-        try {
-            $manager->resetPassword($dto);
-        } catch (\Exception $e) {
-            return $this->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], Response::HTTP_BAD_REQUEST);
-        }
-
-        return $this->json([
-            'success' => true,
-            'message' => 'Mot de passe changé avec succès.'
-        ]);
-    }
-
     private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer): JsonResponse
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy([
@@ -112,5 +86,31 @@ class ResetPasswordController extends AbstractController
     public function redirectApp(string $token)
     {
         return $this->redirect('mythictournament://resetPassword/' . $token);
+    }
+    
+    #[Route('/reset', name: 'api_reset_password', methods: ['POST'])]
+    public function resetPassword(
+        Request $request,
+        ResetPasswordManager $manager
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+
+        $dto = new ResetPasswordDTO();
+        $dto->plainPassword = $data['plainPassword'] ?? null;
+        $dto->token = $data['token'] ?? null;
+
+        try {
+            $manager->resetPassword($dto);
+        } catch (\Exception $e) {
+            return $this->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->json([
+            'success' => true,
+            'message' => 'Mot de passe changé avec succès.'
+        ]);
     }
 }
