@@ -49,7 +49,6 @@
 .env.test
 compose.override.yaml
 compose.yaml 
-composer.lock
 package-lock.json
 phpunit.dist.xml 
 symfony.lock
