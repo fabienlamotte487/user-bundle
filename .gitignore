@@ -36,6 +36,8 @@
 /config/services.php
 # CONFIG
 
+/migrations
+
 ###> phpunit/phpunit ###
 /phpunit.xml
 /.phpunit.cache/
