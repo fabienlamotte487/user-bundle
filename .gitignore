@@ -17,6 +17,19 @@
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
 
+# PACKAGES
+/config/packages/*
+!/config/packages/gesdinet_jwt_refresh_token.yaml
+!/config/packages/lexik_jwt_authentication.yaml
+!/config/packages/reset_password.yaml
+!/config/packages/security.yaml
+# PACKAGES
+
+# ROUTES
+/config/routes/*
+!/config/routes/gesdinet_jwt_refresh_token.yaml
+# ROUTES
+
 ###> phpunit/phpunit ###
 /phpunit.xml
 /.phpunit.cache/
