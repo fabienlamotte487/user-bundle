@@ -31,9 +31,9 @@
 # ROUTES
 
 # CONFIG
-/config/bundles.yaml
-/config/preload.yaml
-/config/services.yaml
+/config/bundles.php
+/config/preload.php
+/config/services.php
 # CONFIG
 
 ###> phpunit/phpunit ###
