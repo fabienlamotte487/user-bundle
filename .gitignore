@@ -42,3 +42,9 @@
 /phpunit.xml
 /.phpunit.cache/
 ###< phpunit/phpunit ###
+
+.editorconfig
+.env 
+.env.dev
+.env.test
+compose.override.yaml
