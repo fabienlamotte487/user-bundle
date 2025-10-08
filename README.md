@@ -59,7 +59,7 @@ Je recommande la configuration de test pour valider que tout fonctionne
 #### Contribution des variables d'environnement
 
 ```bash
-MAILER_DSN=smtp://mon-email@mondomaine.fr:password@@smtp.mail.ovh.net:587
+MAILER_DSN=smtp://mon-email@mondomaine.fr:password@smtp.mail.ovh.net:587
 DATABASE_URL="mysql://root:@127.0.0.1:3306/mabasededonnee"
 ```
 #### Lancement des commandes de créations de base de données
