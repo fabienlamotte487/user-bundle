@@ -29,6 +29,11 @@
 
 ```bash
 symfony new my_project_directory --version="7.3.x"
+cd my_project_directory
+```
+## 🛠️ Intégration du socle de gestion de vie utilisateur
+
+```bash
 $repoUrl = "https://github.com/fabienlamotte487/user-bundle.git"
 $tempDir = New-Item -ItemType Directory -Path ([System.IO.Path]::GetTempPath() + [System.IO.Path]::GetRandomFileName())
 git clone --depth 1 $repoUrl $tempDir
@@ -42,3 +47,4 @@ php bin/console doctrine:database:create --env=test
 php bin/console doctrine:migrations:migrate --env=test
 symfony serve
 php bin/phpunit --testdox
+```
