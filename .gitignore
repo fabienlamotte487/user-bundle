@@ -30,6 +30,12 @@
 !/config/routes/gesdinet_jwt_refresh_token.yaml
 # ROUTES
 
+# CONFIG
+/config/bundles.yaml
+/config/preload.yaml
+/config/services.yaml
+# CONFIG
+
 ###> phpunit/phpunit ###
 /phpunit.xml
 /.phpunit.cache/
