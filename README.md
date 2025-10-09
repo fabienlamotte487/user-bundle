@@ -11,7 +11,7 @@
   <img src="https://img.shields.io/badge/build-passing-brightgreen" alt="Build Status"/>
 </p>
 
-> Ce projet sert de **template pour démarrer un nouveau projet API sous Symfony**, incluant la gestion utilisateur **from scratch**.  
+> Ce projet sert de **template pour démarrer un nouveau projet API sous Symfony**, incluant la gestion utilisateur.  
 > Suivez ces consignes pour monter votre projet rapidement et proprement.
 
 ---
