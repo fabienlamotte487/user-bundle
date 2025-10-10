@@ -35,11 +35,24 @@ cd my_project_directory
 ## 🛠️ Intégration du socle de gestion de vie utilisateur
 ### Clonage du repo (Windows powershell)
 ```bash
+# URL du bundle
 $repoUrl = "https://github.com/fabienlamotte487/user-bundle.git"
-$tempDir = New-Item -ItemType Directory -Path ([System.IO.Path]::GetTempPath() + [System.IO.Path]::GetRandomFileName())
+
+# Dossier temporaire
+$tempDir = Join-Path -Path $env:TEMP -ChildPath ([System.IO.Path]::GetRandomFileName())
+New-Item -ItemType Directory -Path $tempDir | Out-Null
+
+# Cloner uniquement la branche principale et sans historique complet
 git clone --depth 1 $repoUrl $tempDir
-Get-ChildItem -Path $tempDir -Force | ForEach-Object { Move-Item $_.FullName . -Force }
+
+# Copier seulement les dossiers nécessaires (src, config/packages, tests si besoin)
+Copy-Item -Path "$tempDir/src" -Destination ".\vendor\fabienlamotte487\user-bundle\src" -Recurse -Force
+Copy-Item -Path "$tempDir/config/packages" -Destination ".\vendor\fabienlamotte487\user-bundle\config\packages" -Recurse -Force
+Copy-Item -Path "$tempDir/tests" -Destination ".\vendor\fabienlamotte487\user-bundle\tests" -Recurse -Force
+
+# Supprimer le dossier temporaire
 Remove-Item -Recurse -Force $tempDir
+
 ```
 
 ### Installation des dépendances
