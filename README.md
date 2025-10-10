@@ -42,17 +42,16 @@ $repoUrl = "https://github.com/fabienlamotte487/user-bundle.git"
 $tempDir = Join-Path -Path $env:TEMP -ChildPath ([System.IO.Path]::GetRandomFileName())
 New-Item -ItemType Directory -Path $tempDir | Out-Null
 
-# Cloner uniquement la branche principale et sans historique complet
+# Cloner le repo bundle temporairement
 git clone --depth 1 $repoUrl $tempDir
 
-# Copier seulement les dossiers nécessaires (src, config/packages, tests si besoin)
-Copy-Item -Path "$tempDir/src" -Destination ".\vendor\fabienlamotte487\user-bundle\src" -Recurse -Force
-Copy-Item -Path "$tempDir/config/packages" -Destination ".\vendor\fabienlamotte487\user-bundle\config\packages" -Recurse -Force
-Copy-Item -Path "$tempDir/tests" -Destination ".\vendor\fabienlamotte487\user-bundle\tests" -Recurse -Force
+# Déplacer tous les fichiers du bundle vers le projet, sauf le .git
+Get-ChildItem -Path $tempDir -Force | Where-Object { $_.Name -ne ".git" } | ForEach-Object { 
+    Move-Item $_.FullName . -Force 
+}
 
 # Supprimer le dossier temporaire
 Remove-Item -Recurse -Force $tempDir
-
 ```
 
 ### Installation des dépendances
