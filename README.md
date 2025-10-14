@@ -93,4 +93,4 @@ symfony serve
 php bin/phpunit --testdox
 ```
 
-## 🚀 Si tout les tests sont bons, bravo, vous êtes prêts à développer !!
+## 🚀 Si tous les tests sont bons, bravo, vous êtes prêts à développer !!
